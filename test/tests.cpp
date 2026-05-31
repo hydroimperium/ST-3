@@ -1,16 +1,16 @@
 // Copyright 2026 Klimov M.D.
 #include "TimedDoor.h"
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 #include <chrono>
 #include <stdexcept>
 #include <thread>
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
 
 class MockTimerClient : public TimerClient {
  public:
     MOCK_METHOD(void, Timeout, (), (override));
-};
-
+}
+;
 class MockDoor : public Door {
  public:
     MOCK_METHOD(void, lock, (), (override));
