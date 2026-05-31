@@ -1,10 +1,10 @@
 // Copyright 2026 Klimov M.D.
+#include "TimedDoor.h"
 #include <chrono>
 #include <stdexcept>
 #include <thread>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include "TimedDoor.h"
 
 class MockTimerClient : public TimerClient {
  public:
@@ -60,13 +60,16 @@ TEST(TimerTest, TimerCallsTimeout) {
 }
 
 TEST(TimerTest, TimerSleeps) {
-    auto start = std::chrono::steady_clock::now();
+    using std::chrono::steady_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::milliseconds;
+    auto start = steady_clock::now();
     Timer t;
     MockTimerClient client;
     EXPECT_CALL(client, Timeout()).Times(1);
     t.tregister(50, &client);
-    auto end = std::chrono::steady_clock::now();
-    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    auto end = steady_clock::now();
+    auto elapsed = duration_cast<milliseconds>(end - start).count();
     EXPECT_GE(elapsed, 40);
 }
 
